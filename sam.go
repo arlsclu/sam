@@ -16,7 +16,7 @@ var (
 	// control the repid limit of sending message
 	limiter = make(chan struct{}, 5)
 	// repid of check if event(s) happen
-	checkEvery = 60 * time.Second
+	checkEvery = 30 * time.Second
 
 	cfg = config{}
 
