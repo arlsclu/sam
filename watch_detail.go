@@ -7,68 +7,13 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 const (
 	queryDetailUrl = `https://api-sams.walmartmobile.cn/api/v1/sams/goods-portal/spu/queryDetail`
 )
-
-const spuDetailReqTemp = `
-{
-    "source": "iOS",
-    "channel": "1",
-    "uid": "273522748",
-    "storeInfoVOList": [
-        {
-            "storeId": "6558",
-            "storeType": "16",
-            "storeDeliveryAttr": [
-                2,
-                3,
-                4,
-                5,
-                6,
-                9,
-                12,
-                13
-            ]
-        },
-        {
-            "storeId": "9991",
-            "storeType": "32",
-            "storeDeliveryAttr": [
-                10
-            ]
-        },
-        {
-            "storeId": "6696",
-            "storeType": "4",
-            "storeDeliveryAttr": [
-                3,
-                4
-            ]
-        },
-        {
-            "storeId": "9996",
-            "storeType": "8",
-            "storeDeliveryAttr": [
-                1
-            ]
-        }
-    ],
-    "addressVO": {
-        "detailAddress": "63号楼403室",
-        "cityName": "上海市",
-        "countryName": "中国",
-        "districtName": "青浦区",
-        "provinceName": "上海"
-    },
-    "storeId": "6696",
-    "storeDeliveryTemplateId": "1254057665164892694",
-    "spuId": %s,
-    "areaBlockId": "312014188493013526"
-}
-`
 
 type spuDetail struct {
 	Data struct {
@@ -190,7 +135,7 @@ type spuDetail struct {
 
 // func  to check if fullfilled  by  detail
 func checkerByDetail(spuID string) (bool, error) {
-
+	spuDetailReqTemp := viper.GetString("spuDetailReqTemp")
 	resp, err := http.Post(queryDetailUrl, "application/json", strings.NewReader(fmt.Sprintf(spuDetailReqTemp, spuID)))
 	if err != nil {
 		return false, err
